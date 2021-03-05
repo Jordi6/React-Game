@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Peer from 'peerjs';
+
 
 
 
@@ -12,15 +14,23 @@ function Square(props) {
     );
 }
 
+
 class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       squares: Array(9).fill(null),
       xIsNext: true,
+      peer: new Peer(),
+      peer_id: null,
     };
+    this.state.peer.on('open', (id) => {
+     this.setState({peer_id : id})
+
+    });
   }
 
+  
   handleClick(i) {
     const squares = this.state.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
@@ -70,6 +80,8 @@ class Board extends React.Component {
           {this.renderSquare(7)}
           {this.renderSquare(8)}
         </div>
+        <div>My peer id is: {this.state.peer_id}</div>
+        Enter id: <input/><button>connect</button> 
       </div>
     );
   }
@@ -83,7 +95,7 @@ class Game extends React.Component {
           <Board />
         </div>
         <div className="game-info">
-          <div>{/* status */}</div>
+          <div>{/* todo */ }</div>
           <ol>{/* TODO */}</ol>
         </div>
       </div>
